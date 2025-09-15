@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { generateOTP } from "../utils/generateOTP.js";
+import sendMail from "../utils/sendMail.js";
 
 // Register
 export const registerUser = async (req, res) => {
@@ -37,6 +38,7 @@ export const loginUser = async (req, res) => {
 
     // Here you can integrate email/SMS service
     console.log(`OTP for ${email}: ${otp}`);
+    sendMail(user.email, "Your OTP Code", `Your OTP is ${otp}. It is valid for 5 minutes.`);
 
     res.json({ message: "OTP sent to user", userId: user._id });
   } catch (err) {
